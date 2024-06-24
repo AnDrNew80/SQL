@@ -1,0 +1,39 @@
+--------------------------------------------------------
+Online
+
+SELECT name, DATABASEPROPERTYEX(name, 'status')
+FROM master.dbo.sysdatabases
+ 
+
+ALTER DATABASE [DatabaseName] SET ONLINE
+
+--------------------------------------------------------
+Read-only
+
+SELECT name, is_read_only FROM sys.databases
+
+
+
+a.)	Check if database is not in read-only mode:
+
+SQLCMD.EXE -E -S \\.\pipe\MICROSOFT##WID\tsql\query -Q "SELECT name, is_read_only FROM sys.databases"
+
+
+
+--------------------------------------------------------
+Change 
+
+1.Right click the database (mdf/ldf) file or folder and select "Properties".
+2.Select "Security" tab and click the "Edit" button.
+3.Click the "Add" button.
+4.Enter the object name to select as 'NT SERVICE\MSSQLSERVER' and click "Check Names" button.
+5.Select the MSSQLSERVER (RDN) and click the "OK" button twice.
+6.Give this service account "Full control" to the file or folder.
+7.Back in SSMS, right click the database and select "Properties".
+8.Under "Options", scroll down to the "State" section and change "Database Read-Only" from "True" to "False".
+
+
+or:
+
+
+ALTER DATABASE [DatabaseName] SET READ_WRITE
