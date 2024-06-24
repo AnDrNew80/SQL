@@ -1,0 +1,83 @@
+
+
+
+
+Scenario: Autogrow is enabled 
+If autogrow is enabled for the DB file, the script checks the DB setting for FileMaxSize to be set.
+If FileMaxSize is set ñ this is considered the upper limit to threshold against. (unless logical disk size is smaller than FileMaxSize)
+If FileMaxSize is NOT set (Unlimited) then the logical disk size is considered the upper limit.
+
+Scenario: Autogrow is NOT enabled: 
+If autogrow is not enabled, then the file size is considered the max file size and this value is used for threshold comparison.
+
+
+In fact, you also need to calculate free disk space: 
+è https://blogs.technet.microsoft.com/kevinholman/2016/04/03/how-sql-database-free-space-monitoring-works-in-the-sql-management-pack/
+
+
+=======================================================================
+SELECT  name, size/128  FROM sys.master_files order by 2 desc --size is in 8KB pages 
+In SQL Server, the page size is 8-KB. This means SQL Server databases have 128 pages per megabyte
+ 
+ 
+SELECT DB_NAME(database_id) AS DatabaseName,
+Name AS Logical_Name,
+Physical_Name, (size*8)/1024 SizeMB
+FROM sys.master_files
+WHERE DB_NAME(database_id) = 'example'
+GO
+
+
+
+
+
+
+-----------------------------------	
+	USE master
+SELECT * FROM sys.database_files
+--Returns results with the information:
+--MDF file = 179736
+--LDF file = 4912
+
+EXEC sp_databases
+--Restult of master
+--Size = 1442.56KB
+--as stated by BOL, returned value in KB
+
+
+exec sp_spaceused
+--Result of master
+--database_size = 1442.56MB
+
+
+=======================================================================
+Korespondecja odnoúnie sprawdzenia rozmiaru 
+
+
+
+
+
+Ja:
+Regarding to your solution:
+Is undoubtedly better then Lynx because monitor data file apart of log file as you have mentioned.
+But in fact it is only usable when you have limited size of data file (auto growth with maxsize  enabled or auto growth not enabled )   , unless you like shrinking data file very often or truncate tables or you do not have free space on physical disk.
+
+Marek:
+
+Example from our Gemini database (SNOMSK-G31)
+Lynx Tablespace script give result = 10291,19 (which is total size after autogrowth)
+Our script for table space = Space used 8079,44 (which is actual space used from Total Size ) 
+
+Your script give information about total size (Datas+Logs+Autogrowth)then if u delete / truncate old datas u get space available but for Lynx the size will be still same (because it already grown and lynx will still warning us)!
+
+
+
+
+
+
+
+
+
+
+
+
