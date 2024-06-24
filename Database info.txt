@@ -1,0 +1,70 @@
+﻿------------------------------------------------
+Check version
+
+Select @@version
+
+------------------------------------------------
+Nazwy baz, nazwy logiczne i fizyczne plików
+
+select d.name "db name",f.name "logical name",f.physical_name,f.type_desc from sys.databases d
+join  sys.master_files f on f.database_id = d.database_id
+order by d.name asc
+
+
+-------------------------------------------------
+Check expire date
+
+SELECT create_date AS 'SQL Server Install Date', DATEADD(DD, 180, create_date) AS 'SQL Server Expiry Date' 
+FROM sys.server_principals WHERE name = 'NT AUTHORITY\SYSTEM' 
+
+
+
+-------------------------------------------------
+Product code
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\110\BIDS\Setup
+
+ 
+
+When SQL Server 2012 instance is installed, a Summary.txt file is created. This file is typically located at “C:\Program Files\Microsoft SQL Server\110\Setup Bootstrap\LOG\Summary.txt“.
+
+ 
+
+------------------------------------------------
+Information about databases, tables, fields in tables
+
+use sales
+GO
+
+
+SELECT name from sys.databases
+Go
+
+To list tables type:
+sp_help
+
+To List all the databases on the server:
+sp_databases
+
+To list fields in a table called foo:
+sp_help tablename
+sp_help foo
+
+
+SELECT name 
+FROM master.dbo.sysdatabases 
+WHERE name NOT IN ('tempdb')  -- exclude these databases
+
+
+SELECT QUOTENAME([name]) FROM master.sys.databases
+WHERE [state] = 0 AND [is_read_only] = 0 and [name] NOT IN ('tempdb');
+
+l
+
+
+-----------------------------------------------------
+Clear information about database files
+
+select * from sys.master_files 
+select * from sys.databases DB
+ 
+----------------------------------------------
