@@ -1,0 +1,21 @@
+ 
+SELECT [RowLog Contents 0],
+       [RowLog Contents 1],
+       [Current LSN],
+       Operation,
+       Context,
+       [Transaction ID],
+       AllocUnitId,
+       AllocUnitName,
+       [Page ID],
+       [Slot ID]
+FROM sys.fn_dblog(NULL,NULL)
+WHERE Context IN ('LCX_MARK_AS_GHOST', 'LCX_HEAP', 'LCX_CLUSTERED') 
+AND Operation IN ('LOP_DELETE_ROWS', 'LOP_INSERT_ROWS') 
+
+
+
+Select * from sys.fn_dblog(NULL,NULL)
+WHERE Context IN ('LCX_MARK_AS_GHOST', 'LCX_HEAP', 'LCX_CLUSTERED') 
+AND Operation IN ('LOP_DELETE_ROWS', 'LOP_INSERT_ROWS') 
+
