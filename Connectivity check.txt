@@ -1,0 +1,8 @@
+------------------------------------------------
+Check that you have connectivity to the SQL Server. 
+
+Note what you are using to connect: machine name, domain name or IP address? Use this when checking connectivity. For example if you are using myserver
+Start > Run > cmd
+netstat -ano| findstr 1433
+telnet myserver 1433
+ping -a myserver
