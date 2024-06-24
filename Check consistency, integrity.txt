@@ -1,0 +1,48 @@
+ 
+DBCC CHECKDB ('YourDatabase') with NO_INFOMSGS,ALL_ERRORMSGS 
+DBCC CHECKDB ('YourDatabase') WITH PHYSICAL_ONLY - only the physical structure - for large databases, it is best to have only this
+DBCC CHECKIDENT
+DBCC CHECKCONSTRAINTS
+
+
+For all databases:
+EXEC sp_msforeachdb 'DBCC CHECKDB(''?'')'
+
+----------------------------------------
+
+In case of errors:
+
+http://www.sqlcopilot.com/dbcc-checkdb.html
+
+
+DBCC CHECKDB('DB Name', REPAIR_REBUILD)
+
+
+eventually:
+
+DBCC CHECKDB('DB Name', REPAIR_ALLOW_DATA_LOSS)
+---------------------------------------
+
+
+The following example checks the primary filegroup of the   database.
+
+use adsf
+DBCC CHECKFILEGROUP;
+GO
+
+Checks for catalog consistency within the specified database. The database must be online.
+
+use adsf
+DBCC CHECKCATALOG 
+GO
+
+Checks the consistency of disk space allocation structures for a specified database.
+use adsf
+DBCC CHECKALLOC 
+GO
+
+Checks the integrity of all the pages and structures that make up the table or indexed view.
+DBCC CHECKTABLE ('dbo.Certyfikat');
+GO
+
+
